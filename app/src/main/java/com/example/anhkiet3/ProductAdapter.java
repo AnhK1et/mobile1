@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
+import com.bumptech.glide.Glide;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
     private List<Product> productList;
@@ -54,9 +55,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product product = productList.get(position);
-        holder.tvProductName.setText(product.getName());
-        holder.tvProductPrice.setText(product.getPrice());
-        holder.imgProduct.setImageResource(product.getImageResId());
+        holder.tvProductName.setText(product.getName() != null && !product.getName().isEmpty() ? product.getName() : product.getTitle());
+        holder.tvProductPrice.setText(product.getPrice() != null && !product.getPrice().isEmpty() ? product.getPrice() : String.valueOf(product.getPriceDouble()));
+        if (product.getImage() != null && !product.getImage().isEmpty()) {
+            Glide.with(holder.imgProduct.getContext()).load(product.getImage()).into(holder.imgProduct);
+        } else {
+            holder.imgProduct.setImageResource(product.getImageResId());
+        }
         if (showAddToCartButton) {
             holder.btnAddToCart.setVisibility(View.VISIBLE);
             holder.btnAddToCart.setOnClickListener(v -> {

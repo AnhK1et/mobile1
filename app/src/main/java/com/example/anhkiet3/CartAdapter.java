@@ -14,6 +14,7 @@ import android.widget.CheckBox;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
+import com.bumptech.glide.Glide;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder> {
     public interface OnCartActionListener {
@@ -39,9 +40,15 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     @Override
     public void onBindViewHolder(@NonNull CartViewHolder holder, int position) {
         Product product = cartList.get(position);
-        holder.tvProductName.setText(product.getName());
-        holder.tvProductPrice.setText(product.getPrice());
-        holder.imgProduct.setImageResource(product.getImageResId());
+        String name = (product.getName() != null && !product.getName().isEmpty()) ? product.getName() : product.getTitle();
+        holder.tvProductName.setText(name);
+        String price = (product.getPrice() != null && !product.getPrice().isEmpty()) ? product.getPrice() : String.valueOf(product.getPriceDouble());
+        holder.tvProductPrice.setText(price);
+        if (product.getImage() != null && !product.getImage().isEmpty()) {
+            Glide.with(holder.imgProduct.getContext()).load(product.getImage()).into(holder.imgProduct);
+        } else {
+            holder.imgProduct.setImageResource(product.getImageResId());
+        }
         // Giá gốc: demo lấy từ product.getOldPrice() hoặc hardcode
         holder.tvProductOldPrice.setText(product.getOldPrice() != null ? product.getOldPrice() : "");
         holder.tvProductOldPrice.setPaintFlags(holder.tvProductOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);

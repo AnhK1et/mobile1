@@ -3,6 +3,7 @@ package com.example.anhkiet3;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,7 +15,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         EditText etPhone = findViewById(R.id.etPhone);
         Button btnReset = findViewById(R.id.btnReset);
-        Button btnBackToLogin = findViewById(R.id.btnBackToLogin);
+        ImageButton btnBackToLogin = findViewById(R.id.btnBackToLogin);
 
         btnReset.setOnClickListener(v -> {
             String phone = etPhone.getText().toString();

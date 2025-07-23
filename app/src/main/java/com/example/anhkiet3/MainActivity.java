@@ -13,9 +13,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import java.util.HashMap;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    private ArrayList<Product> cart = new ArrayList<>();
+    public static ArrayList<Product> cart = new ArrayList<>();
     private static final int REQUEST_PRODUCT_DETAIL = 1001;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,37 +38,32 @@ public class MainActivity extends AppCompatActivity {
 
         // Danh mục
         RecyclerView rvCategory = findViewById(R.id.rvCategory);
-        List<Category> categoryList = new ArrayList<>();
-        categoryList.add(new Category("Tất cả"));
-        categoryList.add(new Category("iPhone"));
-        categoryList.add(new Category("Samsung"));
-        categoryList.add(new Category("Redmi"));
-        categoryList.add(new Category("Oppo"));
+        List<String> categoryList = new ArrayList<>();
+        categoryList.add("Tất cả"); // Luôn có "Tất cả"
 
         // Sản phẩm
         RecyclerView rvProduct = findViewById(R.id.rvProduct);
         List<Product> allProducts = new ArrayList<>();
-        allProducts.add(new Product("iPhone 15 Pro Max", "34.990.000đ", R.drawable.iphone, "iPhone"));
-        allProducts.add(new Product("Samsung Galaxy S24 Ultra", "28.990.000đ", R.drawable.samsung, "Samsung"));
-        allProducts.add(new Product("Xiaomi 13T Pro", "12.990.000đ", R.drawable.redmi, "Redmi"));
-        allProducts.add(new Product("OPPO Reno10", "10.990.000đ", R.drawable.oppo, "Oppo"));
-        // ... thêm sản phẩm nếu muốn
-
         List<Product> filteredProducts = new ArrayList<>(allProducts); // ban đầu hiển thị tất cả
         ProductAdapter productAdapter = new ProductAdapter(filteredProducts);
         productAdapter.setOnAddToCartListener(product -> {
             boolean found = false;
             for (Product p : cart) {
-                if (p.getName().equals(product.getName())) {
+                String name1 = p.getName() != null ? p.getName() : p.getTitle();
+                String name2 = product.getName() != null ? product.getName() : product.getTitle();
+                if (Objects.equals(name1, name2)) {
                     p.setQuantity(p.getQuantity() + 1);
                     found = true;
                     break;
                 }
             }
             if (!found) {
-                Product newProduct = new Product(product.getName(), product.getPrice(), product.getImageResId(), product.getCategory());
+                Product newProduct = new Product(product.getName(), product.getPrice(), product.getImageResId(), product.getCategory(), product.getDescription());
                 newProduct.setOldPrice(product.getOldPrice());
                 newProduct.setQuantity(1);
+                newProduct.setTitle(product.getTitle());
+                newProduct.setImage(product.getImage());
+                newProduct.setPriceDouble(product.getPriceDouble());
                 cart.add(newProduct);
             }
             Toast.makeText(this, "Đã thêm vào giỏ hàng!", Toast.LENGTH_SHORT).show();
@@ -76,18 +78,74 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(intent, REQUEST_PRODUCT_DETAIL);
         });
 
-        CategoryAdapter categoryAdapter = new CategoryAdapter(categoryList, categoryName -> {
-            filteredProducts.clear();
-            if (categoryName.equals("Tất cả")) {
-                filteredProducts.addAll(allProducts);
-            } else {
-                for (Product p : allProducts) {
-                    if (p.getCategory().equals(categoryName)) {
-                        filteredProducts.add(p);
-                    }
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://fakestoreapi.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        ProductApi api = retrofit.create(ProductApi.class);
+        CategoryApi categoryApi = retrofit.create(CategoryApi.class);
+
+        // Lấy sản phẩm từ FakeStoreAPI khi vào trang chủ
+        api.getProducts().enqueue(new Callback<List<Product>>() {
+            @Override
+            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    allProducts.clear();
+                    allProducts.addAll(response.body());
+                    filteredProducts.clear();
+                    filteredProducts.addAll(response.body());
+                    productAdapter.notifyDataSetChanged();
                 }
             }
-            productAdapter.notifyDataSetChanged();
+            @Override
+            public void onFailure(Call<List<Product>> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Không thể lấy dữ liệu online, vui lòng kiểm tra kết nối!", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        CategoryAdapter categoryAdapter = new CategoryAdapter(categoryList, categoryName -> {
+            if (categoryName.equals("Tất cả")) {
+                api.getProducts().enqueue(new Callback<List<Product>>() {
+                    @Override
+                    public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            filteredProducts.clear();
+                            filteredProducts.addAll(response.body());
+                            productAdapter.notifyDataSetChanged();
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<List<Product>> call, Throwable t) {
+                        filteredProducts.clear();
+                        filteredProducts.addAll(allProducts);
+                        productAdapter.notifyDataSetChanged();
+                        Toast.makeText(MainActivity.this, "Không thể lấy dữ liệu online, đang hiển thị dữ liệu mẫu.", Toast.LENGTH_LONG).show();
+                    }
+                });
+            } else {
+                api.getProductsByCategory(categoryName).enqueue(new Callback<List<Product>>() {
+                    @Override
+                    public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            filteredProducts.clear();
+                            filteredProducts.addAll(response.body());
+                            productAdapter.notifyDataSetChanged();
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<List<Product>> call, Throwable t) {
+                        filteredProducts.clear();
+                        // Lọc offline nếu mất mạng
+                        for (Product p : allProducts) {
+                            if (p.getCategory().equals(categoryName)) {
+                                filteredProducts.add(p);
+                            }
+                        }
+                        productAdapter.notifyDataSetChanged();
+                        Toast.makeText(MainActivity.this, "Không thể lấy dữ liệu online, đang hiển thị dữ liệu mẫu.", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
         });
         rvCategory.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         rvCategory.setAdapter(categoryAdapter);
@@ -95,21 +153,54 @@ public class MainActivity extends AppCompatActivity {
         ImageView imgCart = findViewById(R.id.imgCart);
         imgCart.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, CartActivity.class);
-            intent.putExtra("cart", cart);
             startActivity(intent);
         });
 
-        // Profile demo
-        ImageView imgAvatar = findViewById(R.id.imgAvatar);
-        TextView tvUserName = findViewById(R.id.tvUserName);
-        TextView tvUserEmail = findViewById(R.id.tvUserEmail);
-        ImageButton btnEditProfile = findViewById(R.id.btnEditProfile);
-        // Gán dữ liệu demo
-        tvUserName.setText("Admin");
-        tvUserEmail.setText("admin@gmail.com");
-        // Xử lý nút chỉnh sửa
-        btnEditProfile.setOnClickListener(v -> {
-            Toast.makeText(this, "Chức năng chỉnh sửa profile sẽ cập nhật sau!", Toast.LENGTH_SHORT).show();
+        ImageView btnProfile = findViewById(R.id.btnProfile);
+        btnProfile.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+            startActivity(intent);
+        });
+
+        etSearch.addTextChangedListener(new android.text.TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String keyword = s.toString().toLowerCase();
+                filteredProducts.clear();
+                if (keyword.isEmpty()) {
+                    filteredProducts.addAll(allProducts);
+                } else {
+                    for (Product p : allProducts) {
+                        if (p.getName().toLowerCase().contains(keyword)) {
+                            filteredProducts.add(p);
+                        }
+                    }
+                }
+                productAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void afterTextChanged(android.text.Editable s) {}
+        });
+
+        // Gọi API lấy danh mục động
+        categoryApi.getCategories().enqueue(new Callback<List<String>>() {
+            @Override
+            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    categoryList.clear();
+                    categoryList.add("Tất cả");
+                    categoryList.addAll(response.body());
+                    categoryAdapter.notifyDataSetChanged();
+                }
+            }
+            @Override
+            public void onFailure(Call<List<String>> call, Throwable t) {
+                // Nếu lỗi, giữ danh mục mẫu
+            }
         });
     }
 
@@ -121,16 +212,21 @@ public class MainActivity extends AppCompatActivity {
             if (product != null) {
                 boolean found = false;
                 for (Product p : cart) {
-                    if (p.getName().equals(product.getName())) {
+                    String name1 = p.getName() != null ? p.getName() : p.getTitle();
+                    String name2 = product.getName() != null ? product.getName() : product.getTitle();
+                    if (Objects.equals(name1, name2)) {
                         p.setQuantity(p.getQuantity() + 1);
                         found = true;
                         break;
                     }
                 }
                 if (!found) {
-                    Product newProduct = new Product(product.getName(), product.getPrice(), product.getImageResId(), product.getCategory());
+                    Product newProduct = new Product(product.getName(), product.getPrice(), product.getImageResId(), product.getCategory(), product.getDescription());
                     newProduct.setOldPrice(product.getOldPrice());
                     newProduct.setQuantity(1);
+                    newProduct.setTitle(product.getTitle());
+                    newProduct.setImage(product.getImage());
+                    newProduct.setPriceDouble(product.getPriceDouble());
                     cart.add(newProduct);
                 }
             }

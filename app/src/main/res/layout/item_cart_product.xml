@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@android:color/white"
+    android:background="@drawable/bg_cart_item_box"
     android:padding="12dp"
     android:layout_marginBottom="16dp"
     android:elevation="2dp">
@@ -87,7 +87,7 @@
             android:id="@+id/btnDecrease"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:src="@android:drawable/ic_media_previous"
+            android:src="@drawable/ic_minus"
             android:background="@android:color/transparent"
             android:contentDescription="Giảm"
             android:padding="8dp" />
@@ -115,11 +115,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="#F5F5F5"
-        android:padding="8dp"
+        android:background="@drawable/bg_promo_box"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="4dp"
-        android:radius="8dp">
+        android:padding="8dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -136,6 +135,7 @@
                 android:text="Chọn khuyến mãi"
                 android:textStyle="bold"
                 android:textSize="15sp"
+                android:textColor="#D80027"
                 android:layout_marginLeft="8dp" />
         </LinearLayout>
         <RadioGroup
@@ -148,12 +148,16 @@
                 android:id="@+id/radioPromo1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tặng bảo hành rơi vỡ rơi nước 12 tháng tại CellphoneS" />
+                android:text="Tặng bảo hành rơi vỡ rơi nước 12 tháng tại CellphoneS"
+                android:textColor="#222"
+                android:buttonTint="#D80027" />
             <RadioButton
                 android:id="@+id/radioPromo2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tặng PMH: 600.000đ" />
+                android:text="Tặng PMH: 600.000đ"
+                android:textColor="#222"
+                android:buttonTint="#D80027" />
         </RadioGroup>
     </LinearLayout>
 

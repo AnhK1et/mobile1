@@ -7,14 +7,33 @@
     android:orientation="vertical"
     android:background="#F5F5F5">
 
-    <!-- Banner quảng cáo -->
-    <ImageView
-        android:id="@+id/imgBanner"
+    <!-- Banner quảng cáo với nút profile góc phải trên -->
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/banner"
-        android:layout_marginBottom="12dp"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp">
+
+        <ImageView
+            android:id="@+id/imgBanner"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/banner"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="12dp"/>
+
+        <ImageView
+            android:id="@+id/btnProfile"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="end|top"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_profile"
+            android:background="@drawable/circle_bg"
+            android:padding="8dp"
+            android:contentDescription="Trang cá nhân" />
+    </FrameLayout>
 
     <!-- Thanh tìm kiếm + giỏ hàng -->
     <LinearLayout
@@ -43,55 +62,6 @@
             android:contentDescription="Giỏ hàng"
             android:padding="8dp"
             android:layout_gravity="center_vertical"/>
-    </LinearLayout>
-
-    <!-- Profile -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@android:color/white"
-        android:padding="12dp"
-        android:gravity="center_vertical"
-        android:layout_marginBottom="8dp">
-
-        <ImageView
-            android:id="@+id/imgAvatar"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:src="@mipmap/ic_launcher_round"
-            android:background="@drawable/circle_bg"
-            android:scaleType="centerCrop" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:layout_marginStart="12dp">
-            <TextView
-                android:id="@+id/tvUserName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tên người dùng"
-                android:textStyle="bold"
-                android:textSize="16sp" />
-            <TextView
-                android:id="@+id/tvUserEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="user@gmail.com"
-                android:textColor="#888"
-                android:textSize="14sp" />
-        </LinearLayout>
-
-        <ImageButton
-            android:id="@+id/btnEditProfile"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:src="@android:drawable/ic_menu_edit"
-            android:background="@android:color/transparent"
-            android:contentDescription="Chỉnh sửa" />
     </LinearLayout>
 
     <!-- Danh mục sản phẩm -->

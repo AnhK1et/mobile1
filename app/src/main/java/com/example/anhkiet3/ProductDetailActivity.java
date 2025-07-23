@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import com.bumptech.glide.Glide;
 
 public class ProductDetailActivity extends AppCompatActivity {
     private Product product;
@@ -34,7 +35,11 @@ public class ProductDetailActivity extends AppCompatActivity {
         TextView tvDesc = findViewById(R.id.tvProductDescDetail);
         Button btnAddToCart = findViewById(R.id.btnAddToCartDetail);
 
-        imgProduct.setImageResource(product.getImageResId());
+        if (product.getImage() != null && !product.getImage().isEmpty()) {
+            Glide.with(this).load(product.getImage()).into(imgProduct);
+        } else {
+            imgProduct.setImageResource(product.getImageResId());
+        }
         tvName.setText(product.getName());
         tvPrice.setText(product.getPrice());
         if (product.getOldPrice() != null && !product.getOldPrice().isEmpty()) {
@@ -43,7 +48,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         } else {
             tvOldPrice.setText("");
         }
-        tvDesc.setText("Mô tả sản phẩm sẽ hiển thị ở đây."); // Có thể lấy từ Product nếu có
+        tvDesc.setText(product.getDescription());
 
         btnAddToCart.setOnClickListener(v -> {
             Intent resultIntent = new Intent();

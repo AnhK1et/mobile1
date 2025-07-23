@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="24dp"
-    android:gravity="center">
+    android:gravity="center"
+    android:layout_marginTop="60dp">
 
     <TextView
         android:id="@+id/tvTitle"
@@ -14,7 +15,8 @@
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="#D50000"
-        android:layout_marginBottom="32dp"/>
+        android:layout_marginBottom="32dp"
+        android:layout_marginTop="20dp"/>
 
     <EditText
         android:id="@+id/etEmail"

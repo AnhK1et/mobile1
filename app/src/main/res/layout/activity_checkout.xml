@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F6FA">
+
+    <!-- Tabs for steps -->
+    <LinearLayout
+        android:id="@+id/checkout_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#fff"
+        android:padding="8dp"
+        android:layout_marginTop="0dp">
+        <TextView
+            android:id="@+id/tab_info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="1. THÔNG TIN"
+            android:textStyle="bold"
+            android:textColor="#D80027"
+            android:gravity="center"
+            android:padding="12dp"/>
+        <TextView
+            android:id="@+id/tab_payment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="2. THANH TOÁN"
+            android:textStyle="bold"
+            android:textColor="#B0B0B0"
+            android:gravity="center"
+            android:padding="12dp"/>
+    </LinearLayout>
+
+    <!-- Step 1: Info -->
+    <ScrollView
+        android:id="@+id/layout_info"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:visibility="visible">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Product summary -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#fff"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"
+                android:elevation="2dp">
+                <ImageView
+                    android:id="@+id/checkout_product_image"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/xiaomi14t"
+                    android:scaleType="centerCrop"
+                    android:layout_marginEnd="12dp"/>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/checkout_product_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="iPhone 16 Pro 128GB | Chính hãng VNA-Titan Đen"
+                        android:textStyle="bold"
+                        android:textColor="#222"
+                        android:maxLines="2"
+                        android:ellipsize="end"/>
+                    <TextView
+                        android:id="@+id/checkout_product_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="25.090.000đ"
+                        android:textColor="#D80027"
+                        android:textStyle="bold"
+                        android:textSize="16sp"/>
+                    <TextView
+                        android:id="@+id/checkout_product_old_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="28.000.000đ"
+                        android:textColor="#B0B0B0"/>
+                    <TextView
+                        android:id="@+id/checkout_product_quantity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Số lượng: 1"
+                        android:textColor="#888"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Customer info box -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#fff"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"
+                android:elevation="2dp">
+                <TextView
+                    android:text="THÔNG TIN KHÁCH HÀNG"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="#222"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="8dp"/>
+                <TextView android:id="@+id/checkout_customer_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="AnhKiệt"
+                    android:textStyle="bold"/>
+                <TextView android:id="@+id/checkout_customer_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0973910053"/>
+                <TextView android:id="@+id/checkout_customer_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="nguyenvananhkiet2@gmail.com"/>
+                <CheckBox
+                    android:id="@+id/checkout_receive_promo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nhận email thông báo và ưu đãi từ CellphoneS"/>
+            </LinearLayout>
+
+            <!-- Shipping info box -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#fff"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"
+                android:elevation="2dp">
+                <TextView
+                    android:text="THÔNG TIN NHẬN HÀNG"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="#222"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="8dp"/>
+                <RadioGroup
+                    android:id="@+id/checkout_shipping_method"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <RadioButton
+                        android:id="@+id/checkout_pickup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nhận tại cửa hàng"
+                        android:checked="true"/>
+                    <RadioButton
+                        android:id="@+id/checkout_delivery"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Giao hàng tận nơi"/>
+                </RadioGroup>
+                <Spinner
+                    android:id="@+id/checkout_city"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:prompt="@string/prompt_city"/>
+                <Spinner
+                    android:id="@+id/checkout_district"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:prompt="@string/prompt_district"/>
+                <Spinner
+                    android:id="@+id/checkout_store_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:prompt="@string/prompt_store"/>
+                <EditText
+                    android:id="@+id/checkout_note"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Ghi chú khác (nếu có)"
+                    android:layout_marginTop="8dp"/>
+            </LinearLayout>
+
+            <!-- Invoice request -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#fff"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"
+                android:elevation="2dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Quý khách có muốn xuất hóa đơn công ty không?"/>
+                <RadioGroup
+                    android:id="@+id/checkout_invoice_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <RadioButton
+                        android:id="@+id/checkout_invoice_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Có"/>
+                    <RadioButton
+                        android:id="@+id/checkout_invoice_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Không"
+                        android:checked="true"/>
+                </RadioGroup>
+            </LinearLayout>
+
+            <!-- Total and continue button -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="#fff"
+                android:padding="12dp"
+                android:elevation="2dp">
+                <TextView
+                    android:id="@+id/checkout_total_label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Tổng tiền tạm tính:"
+                    android:textStyle="bold"
+                    android:textColor="#222"/>
+                <TextView
+                    android:id="@+id/checkout_total_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="25.090.000đ"
+                    android:textStyle="bold"
+                    android:textColor="#D80027"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+            <Button
+                android:id="@+id/checkout_continue_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tiếp tục"
+                android:backgroundTint="#D80027"
+                android:textColor="#fff"
+                android:textStyle="bold"
+                android:layout_marginTop="8dp"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Step 2: Payment (ẩn/hiện bằng code) -->
+    <ScrollView
+        android:id="@+id/layout_payment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:visibility="gone">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Payment summary -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#fff"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"
+                android:elevation="2dp">
+                <TextView
+                    android:text="Số lượng sản phẩm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#888"/>
+                <TextView
+                    android:id="@+id/checkout_payment_quantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="01"
+                    android:textStyle="bold"
+                    android:textColor="#222"/>
+                <TextView
+                    android:text="Tổng tiền hàng"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#888"/>
+                <TextView
+                    android:id="@+id/checkout_payment_subtotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="28.900.000đ"
+                    android:textStyle="bold"
+                    android:textColor="#222"/>
+                <TextView
+                    android:text="Phí vận chuyển"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#888"/>
+                <TextView
+                    android:id="@+id/checkout_payment_shipping"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Miễn phí"
+                    android:textStyle="bold"
+                    android:textColor="#222"/>
+                <TextView
+                    android:text="Tổng tiền"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#888"/>
+                <TextView
+                    android:id="@+id/checkout_payment_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="25.090.000đ"
+                    android:textStyle="bold"
+                    android:textColor="#D80027"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+
+            <!-- Payment method -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#fff"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"
+                android:elevation="2dp">
+                <TextView
+                    android:text="THÔNG TIN THANH TOÁN"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="#222"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="8dp"/>
+                <Button
+                    android:id="@+id/checkout_select_payment_method"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Chọn phương thức thanh toán"
+                    android:backgroundTint="#F5F6FA"
+                    android:textColor="#D80027"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+            <!-- Shipping info summary -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#fff"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"
+                android:elevation="2dp">
+                <TextView
+                    android:text="THÔNG TIN NHẬN HÀNG"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="#222"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="8dp"/>
+                <TextView
+                    android:id="@+id/checkout_payment_customer_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="AnhKiệt"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/checkout_payment_customer_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0973910053"/>
+                <TextView
+                    android:id="@+id/checkout_payment_customer_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="nguyenvananhkiet2@gmail.com"/>
+                <TextView
+                    android:id="@+id/checkout_payment_customer_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="130 Trần Não, P. Bình An, Quận 2"/>
+            </LinearLayout>
+
+            <!-- Terms and place order -->
+            <CheckBox
+                android:id="@+id/checkout_terms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Bằng việc Đặt hàng, bạn đồng ý với Điều khoản sử dụng của CellphoneS."
+                android:textColor="#D80027"
+                android:layout_marginBottom="8dp"/>
+            <Button
+                android:id="@+id/checkout_place_order_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Thanh toán"
+                android:backgroundTint="#D80027"
+                android:textColor="#fff"
+                android:textStyle="bold"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout> 

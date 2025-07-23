@@ -9,14 +9,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
-    private List<Category> categoryList;
+    private List<String> categoryList;
     private OnCategoryClickListener listener;
 
     public interface OnCategoryClickListener {
         void onCategoryClick(String categoryName);
     }
 
-    public CategoryAdapter(List<Category> categoryList, OnCategoryClickListener listener) {
+    public CategoryAdapter(List<String> categoryList, OnCategoryClickListener listener) {
         this.categoryList = categoryList;
         this.listener = listener;
     }
@@ -30,10 +30,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     @Override
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
-        Category category = categoryList.get(position);
-        holder.tvCategoryName.setText(category.getName());
+        String category = categoryList.get(position);
+        holder.tvCategoryName.setText(category);
         holder.tvCategoryName.setOnClickListener(v -> {
-            if (listener != null) listener.onCategoryClick(category.getName());
+            if (listener != null) listener.onCategoryClick(category);
         });
     }
 

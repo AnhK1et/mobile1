@@ -3,16 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="24dp"
-    android:gravity="center">
-
+    android:background="#F5F5F5">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:layout_marginTop="32dp">
         <ImageButton
-            android:id="@+id/btnBackToLogin"
+            android:id="@+id/btnBackOrderHistory"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:background="@android:color/transparent"
@@ -22,27 +21,15 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Quên mật khẩu"
-            android:textSize="24sp"
+            android:text="Lịch sử mua hàng"
             android:textStyle="bold"
-            android:textColor="#D50000"
+            android:textSize="20sp"
             android:gravity="center"/>
     </LinearLayout>
-
-    <EditText
-        android:id="@+id/etPhone"
+    <ListView
+        android:id="@+id/lvOrders"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Nhập số điện thoại của bạn"
-        android:inputType="phone"
-        android:layout_marginBottom="16dp"/>
-
-    <Button
-        android:id="@+id/btnReset"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Gửi yêu cầu lấy lại mật khẩu"
-        android:backgroundTint="#D50000"
-        android:textColor="#FFFFFF"/>
-
+        android:layout_height="match_parent"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="1dp" />
 </LinearLayout> 

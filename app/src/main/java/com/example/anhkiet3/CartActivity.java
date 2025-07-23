@@ -12,6 +12,7 @@ import java.util.List;
 import android.widget.CheckBox;
 import java.text.NumberFormat;
 import java.util.Locale;
+import android.widget.Toast;
 
 public class CartActivity extends AppCompatActivity {
     private List<Product> cartProducts;
@@ -26,8 +27,7 @@ public class CartActivity extends AppCompatActivity {
 
         RecyclerView rvCart = findViewById(R.id.rvCart);
         tvTotalPrice = findViewById(R.id.tvTotalPrice);
-        cartProducts = (List<Product>) getIntent().getSerializableExtra("cart");
-        if (cartProducts == null) cartProducts = new ArrayList<>();
+        cartProducts = MainActivity.cart;
 
         cartAdapter = new CartAdapter(cartProducts, new CartAdapter.OnCartActionListener() {
             @Override
@@ -50,7 +50,9 @@ public class CartActivity extends AppCompatActivity {
         // Nút Thanh toán (có thể thêm logic ở đây)
         Button btnCheckout = findViewById(R.id.btnCheckout);
         btnCheckout.setOnClickListener(v -> {
-            // TODO: Xử lý thanh toán
+            Intent intent = new Intent(CartActivity.this, CheckoutActivity.class);
+            // Nếu cần truyền dữ liệu giỏ hàng sang trang thanh toán, có thể dùng intent.putExtra
+            startActivity(intent);
         });
 
         checkboxSelectAll = findViewById(R.id.checkboxSelectAll);
@@ -60,6 +62,15 @@ public class CartActivity extends AppCompatActivity {
             }
             cartAdapter.notifyDataSetChanged();
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (cartAdapter != null) {
+            cartAdapter.notifyDataSetChanged();
+            updateTotalPrice();
+        }
     }
 
     private void updateTotalPrice() {
